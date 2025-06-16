@@ -1,0 +1,91 @@
+<ul class="menu-list">
+    {% for node in menu_tree %}
+        <li class="menu-item {% if node.is_active %}active{% endif %} {% if node.has_active %}has-active-children{% endif %}">
+            {% if node.children %}
+                <div class="menu-parent">
+                    <a href="{{ node.item.get_url }}" class="menu-link">{{ node.item.name }}</a>
+                    <button class="menu-toggle">+</button>
+                </div>
+                <div class="submenu {% if node.has_active %}expanded{% endif %}">
+                    {% include "tree_menu/menu.html" with menu_tree=node.children %}
+                </div>
+            {% else %}
+                <a href="{{ node.item.get_url }}" class="menu-link {% if node.is_active %}active{% endif %}">
+                    {{ node.item.name }}
+                </a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+<style>
+.menu-list {
+    list-style: none;
+    padding-left: 0;
+}
+.menu-item {
+    margin: 5px 0;
+    position: relative;
+}
+.menu-parent {
+    display: flex;
+    align-items: center;
+}
+.menu-link {
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    flex-grow: 1;
+}
+.menu-link:hover {
+    background: #f0f0f0;
+}
+.menu-link.active {
+    font-weight: bold;
+    color: #0066cc;
+}
+.menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 16px;
+}
+.submenu {
+    padding-left: 20px;
+    display: none;
+}
+.submenu.expanded {
+    display: block;
+}
+.has-active-children > .submenu {
+    display: block;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработка кликов по кнопкам раскрытия
+    document.querySelectorAll('.menu-toggle').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const submenu = this.closest('.menu-item').querySelector('.submenu');
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+            this.textContent = submenu.style.display === 'block' ? '-' : '+';
+        });
+    });
+
+    // Автоматически раскрываем активные ветки
+    document.querySelectorAll('.has-active-children').forEach(item => {
+        const toggle = item.querySelector('.menu-toggle');
+        if (toggle) {
+            toggle.textContent = '-';
+        }
+        const submenu = item.querySelector('.submenu');
+        if (submenu) {
+            submenu.style.display = 'block';
+        }
+    });
+});
+</script>
