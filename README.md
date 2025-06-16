@@ -35,5 +35,9 @@ Name: Меню1-ветка1-ветка1 \
 Menu name: main_menu \
 URL: https://exapmle.com \
 Parent: Меню1-ветка1
+___
+## URL
+http://127.0.0.1:8000/tree/ - просмотр дерева
+http://127.0.0.1:8000/admin/ - админка
 
 
