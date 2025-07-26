@@ -28,7 +28,7 @@ venv.bak/
 *.sqlite3
 
 # Media and static files
-media/
+images/
 staticfiles/
 
 # Django migrations
